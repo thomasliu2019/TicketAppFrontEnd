@@ -1,26 +1,44 @@
 import { useState } from "react";
 import api from "../api/api";
+import { useNavigate } from "react-router-dom";
 
-export const RegisterPage = () => {
+  const RegisterPage = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleRegister = async () => {
-    try {
-      await api.post("/registerEmployee", { username, password, role: "EMPLOYEE" });
-      alert("Registration successful. Please login.");
-    } catch (err) {
-      console.error(err);
-      alert("Registration failed");
-    }
+  const navigate = useNavigate();
+  const register = async () => {
+  try {
+    const res = await api.post("/registerEmployee", {
+      username,
+      password,
+      role: "EMPLOYEE",
+    });
+    alert("Registered successfully!");
+  } catch (err: any) {
+    console.error(err);
+    alert("Registration failed: " + (err.response?.data?.message || err.message));
+  }
+};
+  const backToWelcomePage = () => {
+    navigate("/"); // redirects to / (WelcomePage)
+  };
+  const goToLogin = () => {
+    navigate("/login"); // redirects to /login
   };
 
   return (
     <div>
       <h2>Register</h2>
-      <input placeholder="Username" onChange={(e) => setUsername(e.target.value)} />
-      <input type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
-      <button onClick={handleRegister}>Register</button>
+      <input placeholder="Username" value={username} onChange={e => setUsername(e.target.value)} />
+      <input placeholder="Password" type="password" value={password} onChange={e => setPassword(e.target.value)} />
+      <button onClick={register}>Register</button>
+      <button onClick={backToWelcomePage}>Back to Welcome Page</button>
+      <button onClick={goToLogin}>Go to Login</button>
     </div>
   );
 };
+
+export default RegisterPage
+
+

@@ -1,27 +1,27 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import api from "../api/api";
-import { Ticket } from "../types/types";
-import { TicketForm } from "../components/TicketForm";
-import { TicketList } from "../components/TicketList";
+import { Ticket } from "../models/Ticket";
+import TicketForm from "../components/TicketForm";
+import TicketList from "../components/TicketList";
+import { useAuth } from "../auth/AuthContext";
 
-export const EmployeeDashboard = () => {
-  const username = "mani";
+const EmployeeDashboard = () => {
   const [tickets, setTickets] = useState<Ticket[]>([]);
-
-  const fetchTickets = async (username: string) => {
-    const res = await api.get("/tickets/${username}");
-    setTickets(res.data);
-  };
+  const { username } = useAuth();
 
   useEffect(() => {
-    fetchTickets(username);
-  }, []);
+    api.get<Ticket[]>(`/tickets/orderbydate/${username}`).then(res => setTickets(res.data));
+  }, [username]);
 
   return (
     <div>
       <h2>Employee Dashboard</h2>
-      <TicketForm onSubmitted={fetchTickets(username)} />
+      <TicketForm onSubmit={() => window.location.reload()} />
       <TicketList tickets={tickets} />
     </div>
   );
 };
+
+export default EmployeeDashboard;
+
+

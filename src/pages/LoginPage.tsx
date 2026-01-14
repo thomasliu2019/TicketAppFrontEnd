@@ -1,39 +1,60 @@
-import { useState, useContext } from "react";
-import api from "../api/api";
-import { AuthContext } from "../auth/AuthContext";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../auth/AuthContext";
 
-export const LoginPage = () => {
+const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const { setEmployee } = useContext(AuthContext);
+
+  const { login, role } = useAuth();
   const navigate = useNavigate();
 
   const handleLogin = async () => {
     try {
-      const res = await api.post("/login", { username, password });
-      localStorage.setItem("token", res.data.token);
-      localStorage.setItem("employee", JSON.stringify(res.data.employee));
-      setEmployee(res.data.employee);
+      await login(username, password);
 
-      // Redirect based on role
-      if (res.data.employee.role === "MANAGER") {
+      // Redirect based on role stored in AuthContext
+      if (role === "MANAGER") {
         navigate("/manager");
       } else {
         navigate("/employee");
       }
     } catch (err) {
-      console.error(err);
-      alert("Login failed");
+      alert("Invalid username or password");
     }
+  };
+  const goToRegistration = () => {
+    navigate("/registerEmployee"); // redirects to /registerEmployee
+  };
+
+  const goToWelcome = () => {
+    navigate("/"); // redirects to / (WelcomePage)
   };
 
   return (
     <div>
       <h2>Login</h2>
-      <input placeholder="Username" onChange={(e) => setUsername(e.target.value)} />
-      <input type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
+
+      <input
+        placeholder="Username"
+        value={username}
+        onChange={e => setUsername(e.target.value)}
+      />
+
+      <input
+        type="password"
+        placeholder="Password"
+        value={password}
+        onChange={e => setPassword(e.target.value)}
+      />
+
       <button onClick={handleLogin}>Login</button>
+      <button onClick={goToRegistration}>Register</button>
+      <button onClick={goToWelcome}>Back to Welcome Page</button>
     </div>
   );
 };
+
+export default Login;
+
+
