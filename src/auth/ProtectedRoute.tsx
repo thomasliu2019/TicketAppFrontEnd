@@ -1,19 +1,24 @@
+import { ReactNode } from "react";
 import { Navigate } from "react-router-dom";
 import { useAuth } from "./AuthContext";
-import { JSX } from "react";
 
-interface Props {
-  children: JSX.Element;
+interface ProtectedRouteProps {
   role: "EMPLOYEE" | "MANAGER";
+  children: ReactNode;
 }
 
-const ProtectedRoute: React.FC<Props> = ({ children, role }) => {
-  const { role: userRole } = useAuth();
+const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ role, children }) => {
+  const { role: userRole, loading } = useAuth();
 
-  if (!userRole) return <Navigate to="/login" />;
-  if (userRole !== role) return <Navigate to="/" />;
+  // Wait until auth state is loaded
+  if (loading) return null; // or a spinner
 
-  return children;
+  if (!userRole || userRole !== role) {
+    return <Navigate to="/" replace />;
+  }
+
+  return <>{children}</>;
 };
 
 export default ProtectedRoute;
+

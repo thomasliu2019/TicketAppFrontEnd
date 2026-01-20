@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import api from "../api/api";
 import { Ticket } from "../models/Ticket";
 import TicketForm from "../components/TicketForm";
@@ -7,21 +7,42 @@ import { useAuth } from "../auth/AuthContext";
 
 const EmployeeDashboard = () => {
   const [tickets, setTickets] = useState<Ticket[]>([]);
+  const [hasFetched, setHasFetched] = useState(false);
   const { username } = useAuth();
 
-  useEffect(() => {
-    api.get<Ticket[]>(`/tickets/orderbydate/${username}`).then(res => setTickets(res.data));
-  }, [username]);
+  const viewYourTickets = async () => {
+    setHasFetched(true);
+    const res = await api.get<Ticket[]>(`/tickets/orderbydate/${username}`);
+    setTickets(res.data);
+  };
 
   return (
     <div>
       <h2>Employee Dashboard</h2>
+
       <TicketForm onSubmit={() => window.location.reload()} />
-      <TicketList tickets={tickets} />
+
+      <div style={{ marginTop: "32px", marginBottom: "24px" }}>
+        <button onClick={viewYourTickets}>
+          View Your Tickets
+        </button>
+      </div>
+
+      {hasFetched && tickets.length > 0 && (
+        <>
+          <h2>Your Tickets</h2>
+          <TicketList tickets={tickets} />
+        </>
+      )}
+
+      {hasFetched && tickets.length === 0 && (
+        <p>No tickets found.</p>
+      )}
     </div>
   );
 };
 
 export default EmployeeDashboard;
+
 
 

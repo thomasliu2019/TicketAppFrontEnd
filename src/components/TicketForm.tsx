@@ -26,8 +26,8 @@ const TicketForm = ({ onSubmit }: { onSubmit: () => void }) => {
     }
   };
 
-  const goToLogin = () => {
-    navigate("/login"); // redirects to /login
+  const goToWelcome = () => {
+    navigate("/"); // redirects to / (WelcomePage)
   };
 
   return (
@@ -44,7 +44,7 @@ const TicketForm = ({ onSubmit }: { onSubmit: () => void }) => {
         onChange={e => setDescription(e.target.value)}
       />
       <button onClick={submit}>Submit Ticket</button>
-      <button onClick={goToLogin}>Log Out</button>
+      <button onClick={goToWelcome}>Log Out</button>
     </div>
   );
 };

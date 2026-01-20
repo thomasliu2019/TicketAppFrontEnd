@@ -1,28 +1,25 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
+import { useNavigate } from "react-router-dom";
 
-const Login = () => {
+const LoginPage: React.FC = () => {
+  const { login } = useAuth();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-
-  const { login, role } = useAuth();
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  const handleLogin = async () => {
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
     try {
-      await login(username, password);
-
-      // Redirect based on role stored in AuthContext
-      if (role === "MANAGER") {
-        navigate("/manager");
-      } else {
-        navigate("/employee");
-      }
-    } catch (err) {
-      alert("Invalid username or password");
+      await login(username, password); 
+      // Redirect handled inside AuthContext
+    } catch (err: any) {
+      setError("Invalid username or password");
     }
   };
+
   const goToRegistration = () => {
     navigate("/registerEmployee"); // redirects to /registerEmployee
   };
@@ -34,27 +31,29 @@ const Login = () => {
   return (
     <div>
       <h2>Login</h2>
-
-      <input
-        placeholder="Username"
-        value={username}
-        onChange={e => setUsername(e.target.value)}
-      />
-
-      <input
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={e => setPassword(e.target.value)}
-      />
-
-      <button onClick={handleLogin}>Login</button>
-      <button onClick={goToRegistration}>Register</button>
-      <button onClick={goToWelcome}>Back to Welcome Page</button>
+      <form onSubmit={handleLogin}>
+        <input
+          type="text"
+          placeholder="Username"
+          value={username}
+          onChange={e => setUsername(e.target.value)}
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={e => setPassword(e.target.value)}
+        />
+        <button type="submit">Login</button>
+        <button onClick={goToRegistration}>Register</button>
+        <button onClick={goToWelcome}>Back to Welcome Page</button>
+      </form>
+      {error && <p>{error}</p>}
     </div>
   );
 };
 
-export default Login;
+export default LoginPage;
+
 
 

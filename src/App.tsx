@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import EmployeeDashboard from "./pages/EmployeeDashboard";
@@ -8,10 +8,9 @@ import WelcomePage from "./pages/WelcomePage";
 
 function App() {
   return (
-    <BrowserRouter>
     <Routes>
-      <Route path ="/" element ={<WelcomePage/>} />
-      <Route path="/login" element={<LoginPage/>} />
+      <Route path="/" element={<WelcomePage />} />
+      <Route path="/login" element={<LoginPage />} />
       <Route path="/registerEmployee" element={<RegisterPage />} />
       <Route
         path="/employee"
@@ -30,11 +29,11 @@ function App() {
         }
       />
     </Routes>
-  </BrowserRouter>
-  )
+  );
 }
-  
+
 export default App;
+
 
 
 
