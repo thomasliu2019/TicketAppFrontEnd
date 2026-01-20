@@ -1,22 +1,30 @@
+
+// `src/pages/WelcomePage.tsx`
 import { useNavigate } from "react-router-dom";
+import "./apple.css";
 
 const WelcomePage = () => {
-  const navigate = useNavigate();
+    const navigate = useNavigate();
 
-  const goToLogin = () => {
-    navigate("/login"); // redirects to /login
-  };
-  const goToRegistration = () => {
-    navigate("/registerEmployee"); // redirects to /registerEmployee
-  };
+    const goToLogin = () => {
+        navigate("/login");
+    };
+    const goToRegistration = () => {
+        navigate("/registerEmployee");
+    };
 
-  return (
-    <div>
-      <h1>Welcome to the App!</h1>
-      <button onClick={goToLogin}>Login as Existing User</button>
-      <button onClick={goToRegistration}>Register as New User</button>
-    </div>
-  );
+    return (
+        <div className="app-container">
+            <div className="glass card" style={{ padding: 24 }}>
+                <h1>Welcome to the App!</h1>
+                <div style={{ marginTop: 16, display: "flex", gap: 8 }}>
+                    <button className="btn btn-primary" onClick={goToLogin}>Login as Existing User</button>
+                    <button className="btn btn-ghost" onClick={goToRegistration}>Register as New User</button>
+                </div>
+            </div>
+        </div>
+    );
 };
 
 export default WelcomePage;
+
