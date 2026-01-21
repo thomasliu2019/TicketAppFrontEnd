@@ -9,9 +9,11 @@ import "./apple.css";
 
 const ManagerDashboard = () => {
     const [tickets, setTickets] = useState<Ticket[]>([]);
-    type ViewMode = "PENDING" | "APPROVED" | "DENIED";
+    type ViewMode = "PENDING" | "APPROVED" | "DENIED" | "EMPLOYEE";
     const [viewMode, setViewMode] = useState<ViewMode>("PENDING");
     const [hasFetched, setHasFetched] = useState(false);
+    const[employeeUsername, setEmployeeUsername] = useState("");
+    const [showSearchUsername, setSearchUsername] = useState(false);
 
     const navigate = useNavigate();
     const goToWelcome = () => {
@@ -53,45 +55,117 @@ const ManagerDashboard = () => {
         setViewMode("DENIED");
     };
 
+    const viewEmployeeTickets = async (username: string) => {
+        setHasFetched(true);
+        if (username === "") {
+            const res = await api.get<Ticket[]>(`/tickets`);
+            setTickets(res.data);
+        } else {
+            const res = await api.get<Ticket[]>(`/tickets/${username}`);
+            setTickets(res.data);
+        }
+        setViewMode("EMPLOYEE");
+    }   
+
+    const handleDelete = async (id: number) => {
+        try {
+            await api.delete(`/tickets/${id}`);
+            setTickets(prev =>
+                prev.filter(ticket => ticket.id !== id)
+            );
+        } catch (error) {
+            console.error("Failed to delete ticket", error);
+        }
+  };
+
+    const cellStyle = {
+        textAlign: "left" as const,
+        padding: "8px 12px"
+    };
+
     return (
         <div className="app-container">
             <div className="glass card">
                 <h2>Manager Dashboard</h2>
                 <div style={{ marginBottom: 24, display: "flex", gap: 8 }}>
+                    <button className="btn btn-ghost" onClick={() => setSearchUsername(true)}>Search Tickets By Employee Username </button>
                     <button className="btn btn-ghost" onClick={getPendingTickets}>View Pending Tickets</button>
                     <button className="btn btn-ghost" onClick={viewAcceptedTickets}>View Approved Tickets</button>
                     <button className="btn btn-ghost" onClick={viewDeniedTickets}>View Denied Tickets</button>
                     <button className="btn btn-muted" onClick={goToWelcome}>Log Out</button>
                 </div>
+                {showSearchUsername && (
+                    <div>
+                    <input
+                        type="text"
+                        placeholder="Enter Employee Username"
+                        value={employeeUsername}
+                        onChange={(e) => setEmployeeUsername(e.target.value)}
+                    />
+                    <button className="btn btn-muted" onClick={() => viewEmployeeTickets(employeeUsername)}>Search</button>
+                    </div>
+                )}
 
                 {hasFetched && tickets.length === 0 && viewMode && (
                     <p className="empty-message">No tickets available.</p>
                 )}
 
-                {viewMode === "PENDING" && tickets.length > 0 &&
-                    tickets.map(t => (
-                        <PendingTicketRow key={t.id} ticket={t} onResolved={removeTicket}/>
-                    ))}
+                {viewMode === "PENDING" && tickets.length > 0 && (
+                    <table style={{ width: "100%", borderCollapse: "collapse" }}>
+                        <thead>
+                            <tr>
+                                <th style = {cellStyle}>Username</th>
+                                <th style = {cellStyle}>Price</th>
+                                <th style = {cellStyle}>Description</th>
+                                <th style = {cellStyle}>Actions</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {tickets.map(ticket => (
+                                <PendingTicketRow
+                                    key={ticket.id}
+                                    ticket={ticket}
+                                    onResolved={removeTicket}
+                                />
+                            ))}
+                        </tbody>
+                    </table>
+                )
+            } 
 
                 {viewMode !== "PENDING" && tickets.length > 0 && (
                     <table className="table">
                         <thead>
                         <tr>
-                            <th>Employee</th>
-                            <th>Amount</th>
-                            <th>Description</th>
-                            <th>Status</th>
-                            <th>Date Created</th>
+                            <th style = {cellStyle}>Employee</th>
+                            <th style = {cellStyle}>Price</th>
+                            <th style = {cellStyle}>Description</th>
+                            <th style = {cellStyle}>Status</th>
+                            <th style = {cellStyle}>Date Created</th>
+                            <th style={cellStyle}>Actions</th>
                         </tr>
                         </thead>
                         <tbody>
                         {tickets.map(ticket => (
                             <tr key={ticket.id}>
-                                <td>{ticket.username}</td>
-                                <td>${ticket.price}</td>
-                                <td>{ticket.description}</td>
-                                <td>{ticket.status}</td>
-                                <td>{new Date(ticket.createdAt).toLocaleDateString()}</td>
+                                <td style = {cellStyle}>{ticket.username}</td>
+                                <td style = {cellStyle}>${ticket.price}</td>
+                                <td style = {cellStyle}>{ticket.description}</td>
+                                <td style = {cellStyle}>{ticket.status}</td>
+                                <td style = {cellStyle}>{new Date(ticket.createdAt).toLocaleDateString()}</td>
+                                <td style={cellStyle}>
+                                    <button style={{
+                                        backgroundColor: "red",
+                                        color: "white",
+                                        border: "none",
+                                        padding: "6px 12px",
+                                        cursor: "pointer"
+                                    }}    
+                                        onClick={() => handleDelete(ticket.id)}>
+                                        Delete
+                                    </button>
+                                </td>
                             </tr>
                         ))}
                         </tbody>

@@ -14,7 +14,7 @@ const RegisterPage = () => {
                 password,
                 role: "EMPLOYEE",
             });
-            alert("Registered successfully!");
+            navigate("/registersuccess")
         } catch (err: any) {
             console.error(err);
             alert("Registration failed: " + (err.response?.data?.message || err.message));

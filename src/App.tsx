@@ -5,6 +5,8 @@ import EmployeeDashboard from "./pages/EmployeeDashboard";
 import ManagerDashboard from "./pages/ManagerDashboard";
 import ProtectedRoute from "./auth/ProtectedRoute";
 import WelcomePage from "./pages/WelcomePage";
+import TicketSubmittedPage from "./pages/TicketSubmittedPage";
+import RegistrationSuccessfulPage from "./pages/RegisterSuccessfulPage";
 
 function App() {
   return (
@@ -12,6 +14,8 @@ function App() {
       <Route path="/" element={<WelcomePage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/registerEmployee" element={<RegisterPage />} />
+      <Route path="/ticketsubmitted" element={<TicketSubmittedPage />} />
+      <Route path="/registersuccess" element={<RegistrationSuccessfulPage />} />
       <Route
         path="/employee"
         element={

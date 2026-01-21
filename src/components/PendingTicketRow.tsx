@@ -20,17 +20,26 @@ const PendingTicketRow = ({ ticket, onResolved }: PendingTicketRowProps) => {
     }
   };
 
-
+  const cellStyle = {
+    textAlign: "left" as const,
+    padding: "8px 12px"
+  };
   return (
-    <div>
-      ${ticket.price} - {ticket.description}
-      <button type="button" onClick={() => updateStatus("APPROVED")}>
-        Approve
-      </button>
-      <button type="button" onClick={() => updateStatus("DENIED")}>
-        Deny
-      </button>
-    </div>
+    <tr>
+      <td style={cellStyle}>{ticket.username}</td>
+      <td style={cellStyle}>${ticket.price}</td>
+      <td style={cellStyle}>{ticket.description}</td>
+      <td>
+        <div style={{ display: "flex", gap: "8px" }}>
+          <button onClick={() => updateStatus("APPROVED")}>
+            Approve
+          </button>
+          <button onClick={() => updateStatus("DENIED")}>
+            Deny
+          </button>
+        </div>
+      </td>
+    </tr>
   );
 };
 

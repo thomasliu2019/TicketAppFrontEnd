@@ -34,7 +34,7 @@ const EmployeeDashboard = () => {
 
                 {hasFetched && tickets.length > 0 && (
                     <>
-                        <h2>Your Tickets</h2>
+                        <h2>Your Tickets:</h2>
                         <TicketList tickets={tickets} />
                     </>
                 )}

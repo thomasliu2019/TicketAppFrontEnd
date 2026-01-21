@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 const TicketForm = ({ onSubmit }: { onSubmit: () => void }) => {
   const { username } = useAuth();
-  const [price, setPrice] = useState(0);
+  const [price, setPrice] = useState("");
   const [description, setDescription] = useState("");
   const navigate = useNavigate();
 
@@ -16,9 +16,9 @@ const TicketForm = ({ onSubmit }: { onSubmit: () => void }) => {
         price,
         description,
       });
-      alert("Ticket submitted!");
+      navigate("/ticketsubmitted");
       onSubmit();
-      setPrice(0);
+      setPrice("");
       setDescription("");
     } catch (err: any) {
       console.error("Ticket submission error:", err);
@@ -27,16 +27,16 @@ const TicketForm = ({ onSubmit }: { onSubmit: () => void }) => {
   };
 
   const goToWelcome = () => {
-    navigate("/"); // redirects to / (WelcomePage)
+    navigate("/"); 
   };
 
   return (
     <div>
+      <h2 style={{ fontSize: "1rem", marginBottom: "12px" }}>Submit a New Ticket:</h2>
       <input
-        type="number"
         placeholder="Ticket Price"
         value={price}
-        onChange={e => setPrice(+e.target.value)}
+        onChange={e => setPrice(e.target.value)}
       />
       <input
         placeholder="Ticket Description"
