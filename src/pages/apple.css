@@ -1,230 +1,326 @@
-/* src/pages/apple.css */
+/* css */
+/* File: `src/pages/apple.css` */
+/* Unified Apple Store–inspired theme with liquid glass, hero, product grid, form utilities and spacing tokens */
 
-/* Apple-like system font stack, color tokens, glass settings */
+/* Design tokens */
 :root{
-    --bg-image: none; /* set like: url("/assets/hero.jpg") */
-    --bg-overlay: linear-gradient(180deg, rgba(246,247,249,0.6), rgba(236,239,243,0.6));
-    --bg-color-1: #f6f7f9;
-    --bg-color-2: #e9edf2;
-    --glass-bg: rgba(255,255,255,0.6);
-    --glass-strong: rgba(255,255,255,0.8);
-    --glass-border: rgba(255,255,255,0.45);
-    --accent: #007aff; /* Apple blue */
+    --page-bg: #f6f7f9;
+    --surface: #ffffff;
     --muted: #6b7280;
     --text: #0f172a;
+    --accent: #08ff00;
     --radius: 14px;
-    --blur: 14px;
-    --card-shadow: 0 8px 30px rgba(16,24,40,0.08);
+    --glass-bg: rgba(255,255,255,0.62);
+    --glass-strong: rgba(255,255,255,0.8);
+    --glass-border: rgba(255,255,255,0.45);
     --glass-highlight: linear-gradient(135deg, rgba(255,255,255,0.55), rgba(255,255,255,0.08));
+    --card-shadow: 0 10px 30px rgba(16,24,40,0.06);
+    --elev-shadow: 0 18px 50px rgba(16,24,40,0.08);
+    --container-max: 1200px;
+    --gap: 24px;
+    --base-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --input-padding: 12px 14px;
+    --blur: 12;
 }
 
-/* Page background with optional image placeholder */
-html,body{
-    height:100%;
-    margin:0;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    background-image: var(--bg-image), var(--bg-overlay);
-    background-size: cover, cover;
+/* Global page */
+html, body {
+    height: 100%;
+    margin: 0;
+    font-family: var(--base-font);
+    background: var(--page-bg);
+    color: var(--text);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-text-size-adjust: 100%;
+    box-sizing: border-box;
+}
+*, *::before, *::after { box-sizing: inherit; }
+
+/* App container */
+.app-root, .app-container {
+    max-width: var(--container-max);
+    margin: 0 auto;
+    padding: 32px;
+}
+
+/* Top navigation (minimal) */
+.topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 18px 0;
+}
+.topbar .brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 600;
+    font-size: 18px;
+    color: var(--text);
+}
+.topbar .nav {
+    display: flex;
+    gap: 18px;
+    align-items: center;
+    font-size: 15px;
+    color: var(--muted);
+}
+.topbar .nav a {
+    color: var(--muted);
+    text-decoration: none;
+    padding: 6px 8px;
+    border-radius: 8px;
+}
+.topbar .nav a:hover { color: var(--text); background: rgba(15,23,42,0.03); }
+
+/* Hero */
+.hero {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 72px 20px;
+    border-radius: 16px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.95), rgba(250,250,250,0.95));
+    box-shadow: var(--card-shadow);
+    margin-bottom: var(--gap);
+}
+.hero .inner {
+    max-width: 900px;
+}
+.hero h1 {
+    margin: 0 0 12px 0;
+    font-size: 44px;
+    line-height: 1.02;
+    color: var(--text);
+    letter-spacing: -0.6px;
+}
+.hero p {
+    margin: 0 0 20px 0;
+    color: var(--muted);
+    font-size: 17px;
+}
+.hero .cta {
+    display: inline-flex;
+    gap: 12px;
+    align-items: center;
+    justify-content: center;
+}
+.btn-hero {
+    padding: 12px 20px;
+    border-radius: 12px;
+    font-weight: 700;
+    background: linear-gradient(180deg, var(--accent), rgba(25, 248, 0, 0.47));
+    color: #fff;
+    box-shadow: 0 10px 30px rgba(0,122,255,0.14);
+    border: none;
+    cursor: pointer;
+}
+.btn-ghost-hero {
+    background: transparent;
+    border: 1px solid rgba(15,23,42,0.06);
+    color: var(--text);
+    padding: 10px 16px;
+    border-radius: 12px;
+}
+
+/* Product grid (store-like tiles) */
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-bottom: var(--gap);
+}
+.product-card {
+    background: linear-gradient(180deg, var(--surface), #fbfbfd);
+    border-radius: 14px;
+    padding: 18px;
+    box-shadow: var(--card-shadow);
+    border: 1px solid rgba(15,23,42,0.03);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    transition: transform 180ms ease, box-shadow 180ms ease;
+    overflow: hidden;
+}
+.product-card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--elev-shadow);
+}
+.product-media {
+    height: 180px;
+    border-radius: 10px;
+    background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    color: var(--text);
-    -webkit-font-smoothing:antialiased;
-    -moz-osx-font-smoothing:grayscale;
-    -webkit-text-size-adjust:100%;
+    box-shadow: inset 0 -2px 8px rgba(0,0,0,0.03);
 }
+.product-title { font-size: 16px; margin: 0; color: var(--text); }
+.product-price { color: var(--muted); font-weight: 600; }
+.product-cta { margin-top: auto; display: flex; gap: 12px; align-items: center; }
 
-/* App container for consistent padding and max width */
-.app-root, .app-container{
-    max-width:1200px;
-    margin: 28px auto;
-    padding: 24px;
-}
-
-/* Reusable frosted glass surface */
-.glass{
+/* Glass surface and card (forms, panels) */
+.glass {
     background: var(--glass-bg);
     border: 1px solid var(--glass-border);
     border-radius: var(--radius);
     box-shadow: var(--card-shadow);
-    backdrop-filter: blur(var(--blur)px) saturate(1.08);
-    -webkit-backdrop-filter: blur(var(--blur)px) saturate(1.08);
+    backdrop-filter: blur(var(--blur)px) saturate(1.05);
+    -webkit-backdrop-filter: blur(var(--blur)px) saturate(1.05);
     position: relative;
     overflow: hidden;
 }
-
-/* Soft highlight stripe for liquid look */
-.glass::before{
+.glass::before {
     content: "";
     position: absolute;
-    inset:0;
-    pointer-events:none;
+    inset: 0;
+    pointer-events: none;
     background: var(--glass-highlight);
     mix-blend-mode: overlay;
-    opacity:0.35;
+    opacity: 0.35;
     transform: translateY(-40%) rotate(-8deg);
 }
-
-/* Top navigation / header */
-.topbar{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:12px;
-    padding:12px 18px;
-}
-.topbar .brand{
-    display:flex;
-    align-items:center;
-    gap:12px;
-    font-weight:600;
-    font-size:18px;
-}
-.topbar .controls{
-    display:flex;
-    gap:10px;
-    align-items:center;
+.card {
+    padding: 20px;
+    border-radius: 12px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.9), rgba(250,250,250,0.9));
+    border: 1px solid rgba(255,255,255,0.55);
 }
 
-/* Card component */
-.card{
-    padding:18px;
-    border-radius:12px;
-    background: linear-gradient(180deg, rgba(255,255,255,0.55), rgba(255,255,255,0.45));
-    border: 1px solid rgba(255,255,255,0.45);
-    box-shadow: 0 6px 18px rgba(18,24,40,0.06);
-}
-
-/* Headings */
-h1,h2,h3{
-    margin:0 0 12px 0;
-    color:var(--text);
-    letter-spacing:-0.2px;
-}
-h1{font-size:28px}
-h2{font-size:20px}
-h3{font-size:16px}
-
-/* Buttons */
-.btn{
-    -webkit-appearance:none;
-    appearance:none;
-    border: none;
-    padding:10px 14px;
-    border-radius:10px;
-    cursor:pointer;
-    font-weight:600;
-    display:inline-flex;
-    align-items:center;
-    gap:8px;
-    transition:transform 120ms ease, box-shadow 120ms ease, opacity 120ms ease;
-    user-select:none;
-}
-.btn:active{ transform: translateY(1px); }
-
-.btn-primary{
-    background: linear-gradient(180deg, var(--accent), #0051cc);
-    color:#fff;
-    box-shadow: 0 8px 20px rgba(0,122,255,0.18), inset 0 -2px 0 rgba(0,0,0,0.08);
-}
-.btn-ghost{
-    background: transparent;
-    color: var(--accent);
-    border: 1px solid rgba(0,122,255,0.12);
-}
-.btn-muted{
-    background: rgba(15,23,42,0.05);
-    color: var(--text);
-}
-
-/* Input / form elements */
+/* Form controls */
 .input, input[type="text"], input[type="password"], textarea, select {
-    width:100%;
-    padding:12px 14px;
-    border-radius:10px;
+    width: 100%;
+    padding: var(--input-padding);
+    border-radius: 10px;
     border: 1px solid rgba(15,23,42,0.06);
     background: rgba(255,255,255,0.6);
     outline: none;
-    font-size:14px;
-    color:var(--text);
+    font-size: 14px;
+    color: var(--text);
     transition: box-shadow 140ms ease, border-color 120ms ease, transform 120ms ease;
     box-shadow: inset 0 -1px 0 rgba(255,255,255,0.6);
 }
+.input::placeholder { color: rgba(15,23,42,0.36); }
 .input:focus, input:focus, textarea:focus, select:focus {
     border-color: rgba(0,122,255,0.4);
     box-shadow: 0 6px 18px rgba(0,122,255,0.08);
     transform: translateY(-1px);
 }
 
-/* Form layout helpers */
-.form-row{ display:flex; gap:12px; align-items:center; }
-.form-col{ flex:1; }
-
-/* Table styles for manager view */
-.table {
-    width:100%;
-    border-collapse:collapse;
-    background: linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0.52));
-    border-radius:10px;
-    overflow:hidden;
-    border:1px solid rgba(15,23,42,0.04);
+/* Buttons */
+.btn {
+    -webkit-appearance: none;
+    appearance: none;
+    border: none;
+    padding: 10px 14px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: transform 120ms ease, box-shadow 120ms ease, opacity 120ms ease;
+    min-height: 44px;
 }
-.table thead{
+.btn:active { transform: translateY(1px); }
+.btn-primary {
+    background: linear-gradient(180deg, var(--accent), rgba(25, 248, 0, 0.47));
+    color: #fff;
+    box-shadow: 0 8px 24px rgba(0,122,255,0.14);
+}
+.btn-ghost {
+    background: transparent;
+    border: 1px solid rgba(0,122,255,0.12);
+    color: var(--accent);
+}
+.btn-muted {
+    background: rgba(15,23,42,0.05);
+    color: var(--text);
+}
+
+/* Tables (manager view) */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    background: linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0.52));
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid rgba(15,23,42,0.04);
+}
+.table thead {
     background: linear-gradient(180deg, rgba(249,250,251,0.7), rgba(245,247,250,0.6));
     color: var(--muted);
-    font-size:13px;
+    font-size: 13px;
 }
-.table th, .table td{
-    padding:12px 14px;
-    text-align:left;
-    border-bottom:1px solid rgba(15,23,42,0.04);
-    vertical-align:middle;
+.table th, .table td {
+    padding: 12px 14px;
+    text-align: left;
+    border-bottom: 1px solid rgba(15,23,42,0.04);
+    vertical-align: middle;
 }
-.table tbody tr:hover{
-    background: rgba(0,0,0,0.02);
+.table tbody tr:hover { background: rgba(0,0,0,0.02); }
+
+/* Ticket row */
+.ticket-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid rgba(15,23,42,0.03);
+    background: linear-gradient(180deg, rgba(255,255,255,0.55), rgba(250,250,250,0.5));
+    margin-bottom: 10px;
 }
+
+/* Headings & small text */
+.kicker { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.6px; }
+.lead { font-size: 16px; font-weight: 600; color: var(--text); }
+h1, h2, h3 { margin: 0 0 12px 0; color: var(--text); letter-spacing: -0.2px; }
+h1 { font-size: 28px; }
+h2 { font-size: 20px; }
+h3 { font-size: 16px; }
+
+/* Utility classes (form stack, actions, spacing, width) */
+.form-stack { display: flex; flex-direction: column; gap: 12px; }
+.actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.card-pad { padding: 24px; }
+.mt-8 { margin-top: 8px; }
+.mt-12 { margin-top: 12px; }
+.mt-16 { margin-top: 16px; }
+.mt-24 { margin-top: 24px; }
+.mt-32 { margin-top: 32px; }
+.mb-8 { margin-bottom: 8px; }
+.mb-16 { margin-bottom: 16px; }
+.mb-24 { margin-bottom: 24px; }
+.w-full { width: 100%; }
 
 /* Empty / placeholder messages */
-.empty-message, .muted {
-    color: var(--muted);
-    font-size:14px;
-    margin:12px 0;
+.empty-message, .muted { color: var(--muted); font-size: 14px; margin: 12px 0; }
+.empty-message { color: #b91c1c; font-size: 13px; }
+
+/* Responsive behavior */
+@media (max-width: 1100px) {
+    .product-grid { grid-template-columns: repeat(2, 1fr); }
+    .hero h1 { font-size: 36px; }
+}
+@media (max-width: 720px) {
+    .app-root, .app-container { padding: 16px; }
+    .product-grid { grid-template-columns: 1fr; }
+    .hero { padding: 48px 16px; }
+    .hero h1 { font-size: 28px; }
+    .topbar .nav { display: none; }
+    .product-media { height: 140px; }
+    .form-stack { gap: 10px; }
+    .actions { flex-direction: column; align-items: stretch; }
+    .btn { width: 100%; }
 }
 
-/* Ticket list / row (useful for PendingTicketRow) */
-.ticket-row{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:12px;
-    padding:12px;
-    border-radius:10px;
-    border:1px solid rgba(15,23,42,0.03);
-    background: linear-gradient(180deg, rgba(255,255,255,0.55), rgba(250,250,250,0.5));
-    margin-bottom:10px;
-}
-
-/* Small helpers */
-.kicker{ font-size:12px; color:var(--muted); text-transform:uppercase; letter-spacing:0.6px; }
-.lead{ font-size:16px; font-weight:600; color:var(--text); }
-
-/* Responsive tweaks */
-@media (max-width:800px){
-    .app-container{ padding:16px; }
-    .form-row{ flex-direction:column; }
-    .topbar{ flex-direction:column; align-items:flex-start; gap:8px; }
-    .table th, .table td{ padding:10px; font-size:13px; }
-}
-
-/* Accessibility: focus ring */
-:focus{
+/* Accessibility focus ring */
+:focus {
     outline: 3px solid rgba(0,122,255,0.14);
     outline-offset: 2px;
 }
-
-/* Quick usage examples as comments:
-   - Wrap main panels with class .glass for frosted surfaces.
-   - Use .card for simple elevated blocks.
-   - Buttons: add classes .btn .btn-primary or .btn-ghost
-   - Set background image by adding to :root or body:
-       --bg-image: url("/path/to/bg.jpg");
-*/
