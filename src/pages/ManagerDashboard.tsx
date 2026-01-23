@@ -88,11 +88,11 @@ const ManagerDashboard = () => {
             <div className="glass card">
                 <h2>Manager Dashboard</h2>
                 <div style={{ marginBottom: 24, display: "flex", gap: 8 }}>
-                    <button className="btn btn-ghost" onClick={() => setSearchUsername(true)}>Search Tickets By Employee Username </button>
-                    <button className="btn btn-ghost" onClick={getPendingTickets}>View Pending Tickets</button>
-                    <button className="btn btn-ghost" onClick={viewAcceptedTickets}>View Approved Tickets</button>
-                    <button className="btn btn-ghost" onClick={viewDeniedTickets}>View Denied Tickets</button>
-                    <button className="btn btn-muted" onClick={goToWelcome}>Log Out</button>
+                    <button className="btn btn-primary" onClick={() => setSearchUsername(true)}>Search Tickets By Employee Username </button>
+                    <button className="btn btn-primary" onClick={getPendingTickets}>View Pending Tickets</button>
+                    <button className="btn btn-primary" onClick={viewAcceptedTickets}>View Approved Tickets</button>
+                    <button className="btn btn-primary" onClick={viewDeniedTickets}>View Denied Tickets</button>
+                    <button className="btn btn-primary" onClick={goToWelcome}>Log Out</button>
                 </div>
                 {showSearchUsername && (
                     <div>
@@ -102,7 +102,7 @@ const ManagerDashboard = () => {
                         value={employeeUsername}
                         onChange={(e) => setEmployeeUsername(e.target.value)}
                     />
-                    <button className="btn btn-muted" onClick={() => viewEmployeeTickets(employeeUsername)}>Search</button>
+                    <button className="btn btn-primary" onClick={() => viewEmployeeTickets(employeeUsername)}>Search</button>
                     </div>
                 )}
 
@@ -155,13 +155,7 @@ const ManagerDashboard = () => {
                                 <td style = {cellStyle}>{ticket.status}</td>
                                 <td style = {cellStyle}>{new Date(ticket.createdAt).toLocaleDateString()}</td>
                                 <td style={cellStyle}>
-                                    <button style={{
-                                        backgroundColor: "red",
-                                        color: "white",
-                                        border: "none",
-                                        padding: "6px 12px",
-                                        cursor: "pointer"
-                                    }}    
+                                    <button className={"btn btn-muted"}
                                         onClick={() => handleDelete(ticket.id)}>
                                         Delete
                                     </button>

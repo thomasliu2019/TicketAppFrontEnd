@@ -31,10 +31,9 @@ const PendingTicketRow = ({ ticket, onResolved }: PendingTicketRowProps) => {
       <td style={cellStyle}>{ticket.description}</td>
       <td>
         <div style={{ display: "flex", gap: "8px" }}>
-          <button onClick={() => updateStatus("APPROVED")}>
-            Approve
+          <button onClick={() => updateStatus("APPROVED")} className={"btn btn-info"}>Approve
           </button>
-          <button onClick={() => updateStatus("DENIED")}>
+          <button onClick={() => updateStatus("DENIED")} className={"btn btn-muted"}>Decline
             Deny
           </button>
         </div>

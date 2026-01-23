@@ -8,7 +8,7 @@
     --surface: #ffffff;
     --muted: #6b7280;
     --text: #0f172a;
-    --accent: #08ff00;
+    --accent: rgb(6, 76, 158);
     --radius: 14px;
     --glass-bg: rgba(255,255,255,0.62);
     --glass-strong: rgba(255,255,255,0.8);
@@ -23,6 +23,46 @@
     --blur: 12;
 }
 
+/* css */
+.btn-primary:hover {
+    background-color: #d7f171 !important;
+    background-image: none !important;
+    color: var(--text) !important;
+    box-shadow: 0 10px 30px rgba(215,241,113,0.20);
+}
+
+/* css */
+.btn:hover {
+    background-color: #d7f171 !important;
+    background-image: none !important;
+    color: var(--text) !important;
+    box-shadow: 0 8px 24px rgba(215,241,113,0.18);
+    transform: translateY(-2px);
+}
+
+/* css */
+.btn-ghost:hover {
+    background-color: rgba(215,241,113,0.14) !important;
+    border-color: rgba(215,241,113,0.45) !important;
+    color: var(--text) !important;
+    box-shadow: none;
+}
+
+/* css */
+.btn-muted:hover {
+    background-color: rgba(215,241,113,0.12) !important;
+    color: var(--text) !important;
+    border-color: rgba(215,241,113,0.08);
+}
+
+/* css */
+.btn-hero:hover, .btn-ghost-hero:hover {
+    background-color: #d7f171 !important;
+    background-image: none !important;
+    color: var(--text) !important;
+    box-shadow: 0 12px 36px rgba(215,241,113,0.18);
+}
+
 /* Global page */
 html, body {
     height: 100%;
@@ -34,6 +74,12 @@ html, body {
     -moz-osx-font-smoothing: grayscale;
     -webkit-text-size-adjust: 100%;
     box-sizing: border-box;
+    background-image: url('Artboard 1.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-color: var(--page-bg); /* fallback */
 }
 *, *::before, *::after { box-sizing: inherit; }
 
@@ -112,7 +158,7 @@ html, body {
     padding: 12px 20px;
     border-radius: 12px;
     font-weight: 700;
-    background: linear-gradient(180deg, var(--accent), rgba(25, 248, 0, 0.47));
+    background: linear-gradient(180deg, var(--accent), rgb(37, 85, 102));
     color: #fff;
     box-shadow: 0 10px 30px rgba(0,122,255,0.14);
     border: none;
@@ -133,17 +179,54 @@ html, body {
     gap: 24px;
     margin-bottom: var(--gap);
 }
+/* css */
 .product-card {
-    background: linear-gradient(180deg, var(--surface), #fbfbfd);
+    position: relative;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
     border-radius: 14px;
     padding: 18px;
-    box-shadow: var(--card-shadow);
-    border: 1px solid rgba(15,23,42,0.03);
+    box-shadow: 0 8px 24px rgba(16,24,40,0.06); /* softer shadow for glass */
+    backdrop-filter: blur(var(--blur)px) saturate(1.05);
+    -webkit-backdrop-filter: blur(var(--blur)px) saturate(1.05);
     display: flex;
     flex-direction: column;
     gap: 12px;
     transition: transform 180ms ease, box-shadow 180ms ease;
     overflow: hidden;
+    isolation: isolate;
+    background-image: linear-gradient(180deg, rgba(255,255,255,0.28), rgba(255,255,255,0.10));
+}
+
+/* subtle glossy highlight */
+.product-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: var(--glass-highlight);
+    mix-blend-mode: overlay;
+    opacity: 0.38;
+    transform: translateY(-30%) rotate(-6deg);
+}
+
+/* soft bottom vignette / inner shadow for depth */
+.product-card::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 40%;
+    pointer-events: none;
+    background: linear-gradient(180deg, rgba(0,0,0,0), rgba(16,24,40,0.05));
+    border-radius: inherit;
+}
+
+/* hover elevation (keeps liquid feel) */
+.product-card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--elev-shadow);
 }
 .product-card:hover {
     transform: translateY(-8px);
@@ -160,6 +243,51 @@ html, body {
 .product-title { font-size: 16px; margin: 0; color: var(--text); }
 .product-price { color: var(--muted); font-weight: 600; }
 .product-cta { margin-top: auto; display: flex; gap: 12px; align-items: center; }
+/* css */
+.btn-muted:hover {
+    background-color: #ff4d4f !important; /* red */
+    color: #ffffff !important;
+    border-color: rgba(255, 77, 79, 0.25) !important;
+    box-shadow: 0 8px 24px rgba(255, 77, 79, 0.16);
+    transform: translateY(-2px);
+}
+/* css */
+h1 {
+    font-size: clamp(28px, 3.6vw, 48px);
+    line-height: 1.03;
+    font-weight: 800;
+    margin: 0 0 12px;
+    letter-spacing: -0.6px;
+    color: var(--text); /* fallback */
+    background: linear-gradient(90deg, var(--text), var(--accent));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 6px 20px rgba(16,24,40,0.06);
+    -webkit-font-smoothing: antialiased;
+    transform: translateZ(0);
+}
+
+/* decorative accent bar below headings */
+h1::after {
+    content: "";
+    display: block;
+    width: 64px;
+    height: 6px;
+    margin-top: 12px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, rgba(215,241,113,1), var(--accent));
+    opacity: 0.95;
+}
+
+/* stronger hero heading treatment */
+.hero h1 {
+    font-size: clamp(36px, 4.6vw, 56px);
+    font-weight: 900;
+    letter-spacing: -1px;
+    text-shadow: 0 10px 30px rgba(0,0,0,0.06);
+    line-height: 1.02;
+}
 
 /* Glass surface and card (forms, panels) */
 .glass {
@@ -208,6 +336,19 @@ html, body {
     box-shadow: 0 6px 18px rgba(0,122,255,0.08);
     transform: translateY(-1px);
 }
+.price-input {
+    max-width: 260px;
+}
+
+.description {
+    min-height: 160px;
+    resize: vertical;
+}
+
+.btn-logout {
+
+
+}
 
 /* Buttons */
 .btn {
@@ -227,7 +368,7 @@ html, body {
 }
 .btn:active { transform: translateY(1px); }
 .btn-primary {
-    background: linear-gradient(180deg, var(--accent), rgba(25, 248, 0, 0.47));
+    background: linear-gradient(180deg, var(--accent), rgb(37, 85, 102));
     color: #fff;
     box-shadow: 0 8px 24px rgba(0,122,255,0.14);
 }
